@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poolside Promo Forge</title>
+  <style>
+    :root {
+      --bg: #081018;
+      --panel: rgba(10, 18, 28, 0.86);
+      --panel-2: rgba(17, 28, 42, 0.78);
+      --text: #f5f7fb;
+      --muted: #9fb3c8;
+      --line: rgba(255,255,255,0.1);
+      --accent: #ff8f70;
+      --accent-2: #6cf6ff;
+      --accent-3: #ffd36d;
+      --poster-a: #ff6e7f;
+      --poster-b: #7c4dff;
+      --poster-c: #48d5ff;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius: 26px;
+      --radius-sm: 18px;
+      --font-display: "Avenir Next", "Segoe UI", Inter, system-ui, sans-serif;
+      --font-body: Inter, "SF Pro Text", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 143, 112, 0.14), transparent 25%),
+        radial-gradient(circle at 80% 0%, rgba(108, 246, 255, 0.14), transparent 30%),
+        linear-gradient(180deg, #071019 0%, #05080f 100%);
+      color: var(--text);
+      font-family: var(--font-body);
+    }
+
+    body {
+      padding: 24px;
+    }
+
+    .shell {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero, .panel, .result-card, .poster-card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      border-radius: 30px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      gap: 16px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 211, 109, 0.35) 0%, rgba(255, 211, 109, 0) 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--accent-3);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      font-family: var(--font-display);
+      max-width: 900px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 780px;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(320px, 430px) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      border-radius: var(--radius);
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel h2, .results-head h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.03em;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 13px;
+      color: #d8e4f2;
+      letter-spacing: 0.01em;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: var(--panel-2);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px 14px;
+      font: inherit;
+      outline: none;
+      transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    textarea { min-height: 84px; resize: vertical; }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(108,246,255,0.55);
+      box-shadow: 0 0 0 4px rgba(108,246,255,0.12);
+    }
+
+    .vibe-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .vibe-btn, .action-btn, .copy-btn {
+      border: 0;
+      border-radius: 18px;
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+      font: inherit;
+    }
+
+    .vibe-btn {
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: left;
+      display: grid;
+      gap: 4px;
+      min-height: 88px;
+    }
+
+    .vibe-btn strong { font-size: 14px; }
+    .vibe-btn span { font-size: 12px; color: var(--muted); }
+
+    .vibe-btn.active {
+      background: linear-gradient(135deg, rgba(255,143,112,0.28), rgba(108,246,255,0.18));
+      box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+      transform: translateY(-1px);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .action-btn {
+      padding: 14px 16px;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, var(--accent), #ff4f9f);
+      color: #1a0716;
+    }
+
+    .action-btn.secondary {
+      background: linear-gradient(135deg, rgba(108,246,255,0.16), rgba(124,77,255,0.22));
+    }
+
+    .action-btn:hover, .copy-btn:hover, .vibe-btn:hover { transform: translateY(-1px); }
+
+    .workspace {
+      display: grid;
+      gap: 18px;
+    }
+
+    .preview-shell {
+      display: grid;
+      grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .poster-card {
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    .poster-wrap {
+      position: relative;
+      border-radius: 28px;
+      padding: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .poster {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      border-radius: 26px;
+      overflow: hidden;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(165deg, var(--poster-a), var(--poster-b) 55%, var(--poster-c));
+      isolation: isolate;
+    }
+
+    .poster::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 75% 22%, rgba(255,255,255,0.28), transparent 20%),
+        radial-gradient(circle at 20% 88%, rgba(255,255,255,0.12), transparent 25%),
+        linear-gradient(180deg, rgba(4,6,14,0.04), rgba(4,6,14,0.2));
+      z-index: -2;
+    }
+
+    .poster::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mix-blend-mode: soft-light;
+      opacity: 0.25;
+      z-index: -1;
+    }
+
+    .poster-ornament {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(0.2px);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .sun {
+      width: 172px;
+      height: 172px;
+      right: -32px;
+      top: -28px;
+      background: radial-gradient(circle at 35% 35%, rgba(255,241,196,0.95), rgba(255,168,97,0.9) 48%, rgba(255,97,151,0.26) 70%, transparent 75%);
+      box-shadow: 0 0 60px rgba(255, 204, 115, 0.28);
+    }
+
+    .ring {
+      left: -30px;
+      bottom: 104px;
+      width: 118px;
+      height: 118px;
+      border: 14px solid rgba(255,255,255,0.28);
+      background: transparent;
+    }
+
+    .spark {
+      right: 24px;
+      bottom: 132px;
+      width: 68px;
+      height: 68px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0));
+      clip-path: polygon(50% 0%, 62% 36%, 100% 50%, 62% 63%, 50% 100%, 37% 62%, 0% 50%, 37% 37%);
+      border-radius: 0;
+    }
+
+    .poster-top, .poster-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .poster-chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(8, 10, 18, 0.22);
+      border: 1px solid rgba(255,255,255,0.22);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    .poster-brand {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      max-width: 60%;
+      text-wrap: balance;
+    }
+
+    .poster-main {
+      display: grid;
+      gap: 14px;
+      max-width: 84%;
+    }
+
+    .poster-kicker {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      opacity: 0.9;
+    }
+
+    .poster-title {
+      margin: 0;
+      font-size: clamp(42px, 4vw, 64px);
+      line-height: 0.93;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+      text-wrap: balance;
+    }
+
+    .poster-subtitle {
+      font-size: 16px;
+      line-height: 1.35;
+      max-width: 92%;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .poster-cta {
+      width: fit-content;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: rgba(9, 12, 20, 0.72);
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    .poster-meta {
+      display: grid;
+      gap: 6px;
+      text-align: right;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .poster-mini {
+      font-size: 13px;
+      color: rgba(255,255,255,0.82);
+      max-width: 55%;
+      line-height: 1.45;
+    }
+
+    .results-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-end;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .result-card {
+      border-radius: 22px;
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .result-card.full { grid-column: span 2; }
+
+    .result-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .result-meta h3 {
+      margin: 0;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+
+    .result-body {
+      color: #f6f9ff;
+      font-size: 15px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .copy-btn {
+      padding: 9px 12px;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .brand-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .swatch {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.2);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(8, 12, 18, 0.88);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 180ms ease;
+      z-index: 50;
+      box-shadow: var(--shadow);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
+      padding-bottom: 6px;
+    }
+
+    @media (max-width: 1120px) {
+      .grid, .preview-shell, .results-grid {
+        grid-template-columns: 1fr;
+      }
+      .result-card.full { grid-column: span 1; }
+      .poster-main { max-width: 100%; }
+    }
+
+    @media (max-width: 720px) {
+      body { padding: 14px; }
+      .hero, .panel, .poster-card, .result-card { padding: 18px; }
+      .actions { grid-template-columns: 1fr; }
+      .vibe-grid { grid-template-columns: 1fr; }
+      .poster { padding: 18px; }
+      .poster-title { font-size: 42px; }
+      .poster-brand { max-width: 72%; }
+      .poster-subtitle, .poster-mini { max-width: 100%; }
+      .results-head { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="eyebrow">Palm Springs utility · promo concept machine</div>
+      <h1>Poolside Promo Forge</h1>
+      <p>Build a retro-cool promo pack for a local business in seconds: headline, offer, flyer copy, social caption, SMS blast, poster colors, and a polished mockup you can export. Fun enough to play with, sharp enough to sell from.</p>
+      <div class="hero-stats">
+        <div class="pill">Lead-gen angle for Inspired Design</div>
+        <div class="pill">One-screen creative utility</div>
+        <div class="pill">Poster export + copy-to-clipboard</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <aside class="panel">
+        <div>
+          <h2>Build the promo</h2>
+          <p class="subtle">Give it a business, an offer, and a vibe. The forge handles the punchy words and the pretty part.</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="businessName">Business name</label>
+            <input id="businessName" value="Azure Palms" placeholder="Azure Palms" />
+          </div>
+
+          <div class="field">
+            <label for="businessType">Business type</label>
+            <select id="businessType"></select>
+          </div>
+
+          <div class="field">
+            <label for="offerType">Offer style</label>
+            <select id="offerType"></select>
+          </div>
+
+          <div class="field">
+            <label for="audience">Audience</label>
+            <input id="audience" value="locals, weekend wanderers, and regulars who love a good scene" placeholder="who this is for" />
+          </div>
+
+          <div class="field">
+            <label for="city">City / neighborhood</label>
+            <input id="city" value="Palm Springs" placeholder="Palm Springs" />
+          </div>
+
+          <div class="field">
+            <label for="extra">One extra detail</label>
+            <textarea id="extra" placeholder="Optional flavor: rooftop sunset, DJ set, iced matcha drop, two-day flash sale...">golden-hour energy, limited quantities, and a little VIP sparkle</textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Vibe direction</label>
+          <div class="vibe-grid" id="vibeGrid"></div>
+        </div>
+
+        <div class="actions">
+          <button class="action-btn primary" id="generateBtn">Forge promo pack</button>
+          <button class="action-btn secondary" id="surpriseBtn">Surprise me</button>
+          <button class="action-btn" id="exportBtn">Export poster PNG</button>
+          <button class="action-btn" id="copyAllBtn">Copy full pack</button>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <section class="preview-shell">
+          <div class="poster-card">
+            <div class="poster-wrap">
+              <div class="poster" id="poster">
+                <div class="poster-ornament sun"></div>
+                <div class="poster-ornament ring"></div>
+                <div class="poster-ornament spark"></div>
+
+                <div class="poster-top">
+                  <div class="poster-brand" id="posterBrand">AZURE PALMS</div>
+                  <div class="poster-chip" id="posterBadge">Weekend Drop</div>
+                </div>
+
+                <div class="poster-main">
+                  <div class="poster-kicker" id="posterKicker">Poolside promo concept</div>
+                  <h2 class="poster-title" id="posterTitle">Turn the heat into a headline.</h2>
+                  <div class="poster-subtitle" id="posterSubtitle">A sharp local offer built for the scroll, the street, and the counter flyer.</div>
+                  <div class="poster-cta" id="posterCta">Claim the vibe</div>
+                </div>
+
+                <div class="poster-bottom">
+                  <div class="poster-mini" id="posterMini">Suggested play: story post + front-desk flyer + text blast 2 hours before the rush.</div>
+                  <div class="poster-meta">
+                    <span id="posterMeta1">Palm Springs</span>
+                    <span id="posterMeta2">This weekend</span>
+                    <span id="posterMeta3">Limited run</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="results-head">
+              <div>
+                <h2>Promo kit output</h2>
+                <p class="subtle">Copy individual blocks, remix them, or use the whole thing as a fast first draft for a client.</p>
+              </div>
+              <div class="brand-bar" id="brandBar"></div>
+            </div>
+
+            <div class="results-grid" id="resultsGrid"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <div class="footer-note">Built for late-night idea juice, local business hustle, and that specific Palm Springs glow.</div>
+  </div>
+
+  <div class="toast" id="toast">Copied.</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    const businessTypes = {
+      restaurant: {
+        label: 'Restaurant / cafe',
+        nouns: ['table', 'menu', 'night', 'patio', 'bite'],
+        verbs: ['pull in', 'pack out', 'draw', 'bring back'],
+        perk: 'foot traffic and repeat visits',
+        detail: 'tasty reasons to walk in tonight'
+      },
+      bar: {
+        label: 'Bar / lounge',
+        nouns: ['pour', 'set', 'round', 'hour', 'toast'],
+        verbs: ['fill', 'spark', 'light up', 'drive'],
+        perk: 'happy-hour momentum',
+        detail: 'a reason to start the night here'
+      },
+      boutique: {
+        label: 'Boutique / retail',
+        nouns: ['drop', 'rack', 'look', 'find', 'haul'],
+        verbs: ['move', 'show off', 'sell through', 'feature'],
+        perk: 'higher basket size',
+        detail: 'scarcity with style'
+      },
+      salon: {
+        label: 'Salon / spa',
+        nouns: ['glow', 'refresh', 'ritual', 'treatment', 'booking'],
+        verbs: ['book', 'fill', 'stack', 'upgrade'],
+        perk: 'calendar fill and upsells',
+        detail: 'a polished little excuse to book now'
+      },
+      fitness: {
+        label: 'Fitness / wellness',
+        nouns: ['session', 'reset', 'sweat', 'membership', 'flow'],
+        verbs: ['convert', 'energize', 'kickstart', 'activate'],
+        perk: 'intro offer conversions',
+        detail: 'momentum people can join fast'
+      },
+      hotel: {
+        label: 'Hotel / stay',
+        nouns: ['escape', 'suite', 'stay', 'sunset', 'weekend'],
+        verbs: ['book', 'upgrade', 'fill', 'romance'],
+        perk: 'midweek bookings',
+        detail: 'vacation temptation with urgency'
+      },
+      service: {
+        label: 'Local service business',
+        nouns: ['special', 'slot', 'service', 'upgrade', 'rescue'],
+        verbs: ['book', 'unlock', 'fill', 'convert'],
+        perk: 'faster inquiry-to-booking',
+        detail: 'a no-brainer yes offer'
+      },
+      event: {
+        label: 'Event / venue',
+        nouns: ['ticket', 'guest list', 'night', 'lineup', 'moment'],
+        verbs: ['sell', 'fill', 'draw', 'buzz'],
+        perk: 'faster RSVPs',
+        detail: 'social proof and urgency'
+      },
+      print: {
+        label: 'Print / creative shop',
+        nouns: ['proof', 'promo', 'run', 'bundle', 'campaign'],
+        verbs: ['close', 'bundle', 'upsell', 'launch'],
+        perk: 'lead generation',
+        detail: 'show the idea and sell the service'
+      }
+    };
+
+    const offerTypes = {
+      flash: {
+        label: 'Flash sale',
+        kicker: '48-hour push',
+        promise: 'short-window urgency',
+        ctas: ['Grab it before it fades', 'Claim your slot', 'Catch the window'],
+        hooks: ['today only', '48 hours only', 'while the good stuff lasts']
+      },
+      vip: {
+        label: 'VIP night',
+        kicker: 'Guest-list energy',
+        promise: 'exclusive treatment',
+        ctas: ['Get on the list', 'Unlock the VIP version', 'Step into the good room'],
+        hooks: ['invite-only feel', 'for the insiders', 'with a little velvet-rope energy']
+      },
+      seasonal: {
+        label: 'Seasonal special',
+        kicker: 'Fresh seasonal angle',
+        promise: 'timely relevance',
+        ctas: ['Taste the season', 'Book the seasonal move', 'Catch the new drop'],
+        hooks: ['made for right now', 'built for the season', 'just landed this week']
+      },
+      launch: {
+        label: 'Launch moment',
+        kicker: 'New thing glow',
+        promise: 'launch-day attention',
+        ctas: ['Be first in line', 'See what just landed', 'Join the launch'],
+        hooks: ['brand new', 'freshly dropped', 'just revealed']
+      },
+      bundle: {
+        label: 'Bundle / package',
+        kicker: 'More value, less thinking',
+        promise: 'easy yes economics',
+        ctas: ['Take the bundle', 'Lock in the combo', 'Upgrade in one click'],
+        hooks: ['stacked value', 'best-value move', 'built to make choosing easy']
+      },
+      comeback: {
+        label: 'Win-back special',
+        kicker: 'Bring them back',
+        promise: 'reactivate old customers',
+        ctas: ['Come back for the good part', 'Return to the vibe', 'Make your comeback'],
+        hooks: ['for past favorites', 'to bring regulars back in', 'for the people who miss you']
+      }
+    };
+
+    const vibes = {
+      sunset: {
+        name: 'Sunset Mirage',
+        note: 'Warm gradients + resort glow',
+        palette: ['#ff8d72', '#ff4d9a', '#ffd36d', '#5de6ff'],
+        poster: ['#ff7e6b', '#b14dff', '#58d8ff'],
+        motifs: ['sun lines', 'soft chrome', 'golden hour'],
+        fontMood: 'Bold caps + glossy CTA',
+        channels: 'IG Story, postcard, window flyer'
+      },
+      cabana: {
+        name: 'Cabana Cool',
+        note: 'Pool tiles + aqua luxury',
+        palette: ['#5de6ff', '#2f7cff', '#9cffd9', '#fff2bc'],
+        poster: ['#1ccad8', '#1976ff', '#89ffcf'],
+        motifs: ['pool rings', 'clean grids', 'vacation energy'],
+        fontMood: 'Crisp sans + airy spacing',
+        channels: 'SMS, counter card, menu insert'
+      },
+      neon: {
+        name: 'Neon Afterglow',
+        note: 'Nightlife contrast + electric accents',
+        palette: ['#ff4d9a', '#7c4dff', '#6cf6ff', '#19162b'],
+        poster: ['#ff3d8f', '#5b36ff', '#0de4ff'],
+        motifs: ['after-hours shine', 'club edge', 'high contrast'],
+        fontMood: 'Punchy display + sharp microcopy',
+        channels: 'Reel cover, event flyer, text blast'
+      },
+      oasis: {
+        name: 'Desert Oasis',
+        note: 'Muted luxe + boutique calm',
+        palette: ['#f2c17d', '#ef7f5a', '#7bc7c7', '#f3ece2'],
+        poster: ['#f2b86f', '#ef7f5a', '#5ec7b0'],
+        motifs: ['desert calm', 'linen tones', 'soft premium'],
+        fontMood: 'Elegant minimal + gentle urgency',
+        channels: 'Email header, table tent, square post'
+      }
+    };
+
+    const selectors = {
+      businessName: document.getElementById('businessName'),
+      businessType: document.getElementById('businessType'),
+      offerType: document.getElementById('offerType'),
+      audience: document.getElementById('audience'),
+      city: document.getElementById('city'),
+      extra: document.getElementById('extra'),
+      vibeGrid: document.getElementById('vibeGrid'),
+      resultsGrid: document.getElementById('resultsGrid'),
+      brandBar: document.getElementById('brandBar'),
+      toast: document.getElementById('toast'),
+      poster: document.getElementById('poster')
+    };
+
+    let activeVibe = 'sunset';
+    let latestPack = null;
+
+    function titleCase(value) {
+      return value.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
+    }
+
+    function randomItem(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function slugify(text) {
+      return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'promo-pack';
+    }
+
+    function populateSelects() {
+      Object.entries(businessTypes).forEach(([key, value]) => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = value.label;
+        selectors.businessType.appendChild(option);
+      });
+
+      Object.entries(offerTypes).forEach(([key, value]) => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = value.label;
+        selectors.offerType.appendChild(option);
+      });
+
+      selectors.businessType.value = 'hotel';
+      selectors.offerType.value = 'launch';
+    }
+
+    function renderVibes() {
+      selectors.vibeGrid.innerHTML = '';
+      Object.entries(vibes).forEach(([key, vibe]) => {
+        const button = document.createElement('button');
+        button.className = `vibe-btn ${key === activeVibe ? 'active' : ''}`;
+        button.innerHTML = `<strong>${vibe.name}</strong><span>${vibe.note}</span>`;
+        button.addEventListener('click', () => {
+          activeVibe = key;
+          renderVibes();
+          if (latestPack) generatePack();
+        });
+        selectors.vibeGrid.appendChild(button);
+      });
+    }
+
+    function buildHeadline(name, business, offer) {
+      const nameWord = name.split(/\s+/)[0];
+      const options = [
+        `Make ${nameWord} the move this ${randomItem(['weekend', 'week', 'night'])}`,
+        `${randomItem(['Hotter', 'Sharper', 'Cooler', 'Brighter'])} than the usual ${randomItem(business.nouns)}`,
+        `${randomItem(['Limited', 'Fresh', 'VIP', 'Golden-hour'])} ${randomItem(business.nouns)} energy`,
+        `${randomItem(['Turn heads with', 'Pull crowds with', 'Lead with', 'Own the scroll with'])} ${randomItem(['a', 'your'])} ${offer.label.toLowerCase()}`,
+        `${randomItem(['Give them', 'Bring back', 'Drop', 'Launch'])} a ${randomItem(['reason', 'moment', 'favorite', 'headline'])}`
+      ];
+      return randomItem(options);
+    }
+
+    function buildSubhead(name, offer, audience, city, extra) {
+      const openers = [
+        `${offer.promise}, tuned for ${city}.`,
+        `Built for ${audience} in ${city}.`,
+        `A scroll-stopping push for ${city} with ${offer.promise}.`,
+        `Your next promo angle, aimed straight at ${audience}.`
+      ];
+      const extras = [
+        `Think ${extra}.`,
+        `Angle it around ${extra}.`,
+        `Keep the energy on ${extra}.`,
+        `Frame it with ${extra}.`
+      ];
+      return `${randomItem(openers)} ${randomItem(extras)}`;
+    }
+
+    function buildOfferLine(name, business, offer) {
+      const starters = [
+        `Run a ${offer.label.toLowerCase()} that ${randomItem(business.verbs)} bookings fast.`,
+        `Package a ${offer.label.toLowerCase()} around ${randomItem(['bestsellers', 'quiet hours', 'premium upgrades', 'community buzz'])}.`,
+        `Lead with ${randomItem(['one hero offer', 'a tight bundle', 'a limited-window perk', 'a members-only angle'])} so the decision feels easy.`
+      ];
+      return `${randomItem(starters)} Focus on ${business.perk}.`;
+    }
+
+    function buildCaption(name, business, offer, vibe, city, extra) {
+      const line1 = `${name} just found its next ${randomItem(['headline', 'promo pulse', 'campaign hook', 'crowd magnet'])}.`;
+      const line2 = `${offer.label} meets ${vibe.note.toLowerCase()} — built for ${city} and shaped around ${extra}.`;
+      const line3 = `Use it to ${randomItem(business.verbs)} attention, give people one clear reason to say yes, and let the visuals do the flirting.`;
+      const line4 = `${randomItem(['DM to claim it.', 'Book now.', 'Reply for details.', 'Tap in before it cools off.'])}`;
+      return `${line1} ${line2} ${line3} ${line4}`;
+    }
+
+    function buildFlyer(name, business, offer, audience, city, extra) {
+      return `${name} is turning up the heat in ${city} with a ${offer.label.toLowerCase()} made for ${audience}. Expect ${extra}, a clear value hook, and just enough urgency to get people moving now. Best use: one bold headline, one irresistible offer, one dead-simple CTA.`;
+    }
+
+    function buildSms(name, offer) {
+      return `${name}: ${randomItem(['quick one', 'heads up', 'you’re invited'])} — our ${offer.label.toLowerCase()} is live ${randomItem(offer.hooks)}. ${randomItem(offer.ctas)}.`;
+    }
+
+    function buildStrategy(business, vibe, city) {
+      return `Best channel mix: ${vibe.channels}. Print a countertop mini-poster, mirror the headline in an IG Story, then send the SMS blast about 2 hours before the busiest window in ${city}.`;
+    }
+
+    function buildHashtags(name, businessType, city) {
+      const typeTag = businessType === 'print' ? 'PrintDesign' : titleCase(businessType).replace(/\s+/g, '');
+      return [`#${slugify(name).replace(/-/g, '')}`, `#${city.replace(/[^a-z0-9]/gi, '')}`, '#PalmSpringsStyle', '#PromoDrop', `#${typeTag}`, '#SmallBusinessMagic'];
+    }
+
+    function buildPosterMeta(offer) {
+      return [randomItem(['This weekend', 'Tonight only', 'Fresh this week', 'Now booking']), randomItem(offer.hooks), randomItem(['Limited run', 'Local favorite energy', 'Designed to convert', 'Made for the rush'])];
+    }
+
+    function renderBrandBar(vibe) {
+      selectors.brandBar.innerHTML = '';
+      vibe.palette.forEach((color) => {
+        const swatch = document.createElement('div');
+        swatch.className = 'swatch';
+        swatch.style.background = color;
+        selectors.brandBar.appendChild(swatch);
+      });
+      const meta = document.createElement('div');
+      meta.className = 'pill';
+      meta.textContent = `${vibe.name} · ${vibe.fontMood}`;
+      selectors.brandBar.appendChild(meta);
+    }
+
+    function renderResults(pack) {
+      const cards = [
+        ['Headline', pack.headline],
+        ['Offer angle', pack.offerLine],
+        ['CTA', pack.cta],
+        ['Suggested caption', pack.caption],
+        ['Flyer copy', pack.flyer],
+        ['SMS blast', pack.sms],
+        ['Why it works', pack.strategy],
+        ['Hashtags', pack.hashtags.join(' ')],
+      ];
+
+      selectors.resultsGrid.innerHTML = '';
+      cards.forEach(([title, body], index) => {
+        const card = document.createElement('article');
+        card.className = `result-card ${index === 3 || index === 4 ? 'full' : ''}`;
+        card.innerHTML = `
+          <div class="result-meta">
+            <h3>${title}</h3>
+            <button class="copy-btn" data-copy="${encodeURIComponent(body)}">Copy</button>
+          </div>
+          <div class="result-body">${body}</div>
+        `;
+        selectors.resultsGrid.appendChild(card);
+      });
+
+      selectors.resultsGrid.querySelectorAll('[data-copy]').forEach((button) => {
+        button.addEventListener('click', () => copyText(decodeURIComponent(button.dataset.copy)));
+      });
+    }
+
+    function updatePoster(pack) {
+      const [a, b, c] = pack.vibe.poster;
+      document.documentElement.style.setProperty('--poster-a', a);
+      document.documentElement.style.setProperty('--poster-b', b);
+      document.documentElement.style.setProperty('--poster-c', c);
+      document.documentElement.style.setProperty('--accent', pack.vibe.palette[0]);
+      document.documentElement.style.setProperty('--accent-2', pack.vibe.palette[1]);
+      document.documentElement.style.setProperty('--accent-3', pack.vibe.palette[2]);
+
+      document.getElementById('posterBrand').textContent = pack.name.toUpperCase();
+      document.getElementById('posterBadge').textContent = pack.offer.label;
+      document.getElementById('posterKicker').textContent = pack.vibe.name;
+      document.getElementById('posterTitle').textContent = pack.posterTitle;
+      document.getElementById('posterSubtitle').textContent = pack.subhead;
+      document.getElementById('posterCta').textContent = pack.cta;
+      document.getElementById('posterMini').textContent = pack.strategy;
+      document.getElementById('posterMeta1').textContent = pack.city;
+      document.getElementById('posterMeta2').textContent = pack.meta[0];
+      document.getElementById('posterMeta3').textContent = pack.meta[2];
+    }
+
+    function generatePack() {
+      const name = selectors.businessName.value.trim() || 'Your Business';
+      const business = businessTypes[selectors.businessType.value];
+      const offer = offerTypes[selectors.offerType.value];
+      const vibe = vibes[activeVibe];
+      const audience = selectors.audience.value.trim() || 'locals and visitors';
+      const city = selectors.city.value.trim() || 'Palm Springs';
+      const extra = selectors.extra.value.trim() || 'a crisp offer and a little personality';
+      const headline = buildHeadline(name, business, offer);
+      const subhead = buildSubhead(name, offer, audience, city, extra);
+      const offerLine = buildOfferLine(name, business, offer);
+      const cta = randomItem(offer.ctas);
+      const caption = buildCaption(name, business, offer, vibe, city, extra);
+      const flyer = buildFlyer(name, business, offer, audience, city, extra);
+      const sms = buildSms(name, offer);
+      const strategy = buildStrategy(business, vibe, city);
+      const hashtags = buildHashtags(name, selectors.businessType.value, city);
+      const meta = buildPosterMeta(offer);
+
+      latestPack = {
+        name,
+        city,
+        business,
+        offer,
+        vibe,
+        headline,
+        posterTitle: headline.replace(/\.$/, ''),
+        subhead,
+        offerLine,
+        cta,
+        caption,
+        flyer,
+        sms,
+        strategy,
+        hashtags,
+        meta
+      };
+
+      renderBrandBar(vibe);
+      renderResults(latestPack);
+      updatePoster(latestPack);
+    }
+
+    function surpriseMe() {
+      const businessKeys = Object.keys(businessTypes);
+      const offerKeys = Object.keys(offerTypes);
+      const vibeKeys = Object.keys(vibes);
+      const presets = [
+        {
+          name: 'Saguaro Social',
+          audience: 'after-work locals and stylish weekend strays',
+          city: 'Palm Springs',
+          extra: 'sunset cocktails, a short guest list, and gold-hour photo bait'
+        },
+        {
+          name: 'Moonline Market',
+          audience: 'late-night shoppers and design-hungry browsers',
+          city: 'Cathedral City',
+          extra: 'limited drops, small-batch favorites, and playful scarcity'
+        },
+        {
+          name: 'Canyon Glow Club',
+          audience: 'new clients who love premium little upgrades',
+          city: 'Rancho Mirage',
+          extra: 'clean visuals, premium language, and an offer that feels easy'
+        }
+      ];
+      const preset = randomItem(presets);
+      selectors.businessName.value = preset.name;
+      selectors.businessType.value = randomItem(businessKeys);
+      selectors.offerType.value = randomItem(offerKeys);
+      selectors.audience.value = preset.audience;
+      selectors.city.value = preset.city;
+      selectors.extra.value = preset.extra;
+      activeVibe = randomItem(vibeKeys);
+      renderVibes();
+      generatePack();
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast('Copied to clipboard.');
+      } catch (error) {
+        showToast('Copy failed — clipboard blocked.');
+      }
+    }
+
+    function fullPackText() {
+      if (!latestPack) return '';
+      return [
+        `Poolside Promo Forge`,
+        `Business: ${latestPack.name}`,
+        `Vibe: ${latestPack.vibe.name}`,
+        `Headline: ${latestPack.headline}`,
+        `Offer angle: ${latestPack.offerLine}`,
+        `CTA: ${latestPack.cta}`,
+        `Caption: ${latestPack.caption}`,
+        `Flyer copy: ${latestPack.flyer}`,
+        `SMS: ${latestPack.sms}`,
+        `Why it works: ${latestPack.strategy}`,
+        `Hashtags: ${latestPack.hashtags.join(' ')}`
+      ].join('\n\n');
+    }
+
+    async function exportPoster() {
+      if (!window.html2canvas) {
+        showToast('Export library did not load.');
+        return;
+      }
+      const canvas = await window.html2canvas(selectors.poster, {
+        backgroundColor: null,
+        scale: 2,
+        useCORS: true
+      });
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = `${slugify(latestPack?.name || 'poolside-promo-forge')}-poster.png`;
+      link.click();
+      showToast('Poster exported.');
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      selectors.toast.textContent = message;
+      selectors.toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => selectors.toast.classList.remove('show'), 1800);
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', generatePack);
+    document.getElementById('surpriseBtn').addEventListener('click', surpriseMe);
+    document.getElementById('exportBtn').addEventListener('click', exportPoster);
+    document.getElementById('copyAllBtn').addEventListener('click', () => copyText(fullPackText()));
+
+    populateSelects();
+    renderVibes();
+    generatePack();
+  </script>
+</body>
+</html>
